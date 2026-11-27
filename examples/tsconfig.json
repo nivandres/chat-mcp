@@ -9,8 +9,8 @@
     "noEmit": true,
     "types": ["node"],
     "paths": {
-      "chat-mcp": ["../src/index.ts"],
-      "chat-mcp/config": ["../src/config.ts"]
+      "chat-sdk-mcp": ["../src/index.ts"],
+      "chat-sdk-mcp/config": ["../src/config.ts"]
     }
   },
   "include": ["./*.ts"]

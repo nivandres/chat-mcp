@@ -53,7 +53,7 @@ export type RegisteredChatTools = Partial<
   Record<ChatMcpToolName, RegisteredTool>
 >;
 
-/** The catalog slug of each adapter chat-mcp built itself, so its catalog features can hide what it lacks. */
+/** The catalog slug of each adapter chat-sdk-mcp built itself, so its catalog features can hide what it lacks. */
 export const catalogSlugs = new WeakMap<ChatBinding, Record<string, string>>();
 
 function sourceOf(bots: Record<string, ChatBinding> | BotSource): BotSource {

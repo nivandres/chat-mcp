@@ -10,7 +10,7 @@ function channelOf(chat: ChatBinding, id: string): string {
   );
 }
 
-/** Chat SDK's scope check for an explicit `scope`, for chat-mcp's own paths; MCP calls never run inside a bot handler, so there is no active conversation to fall back to. */
+/** Chat SDK's scope check for an explicit `scope`, for chat-sdk-mcp's own paths; MCP calls never run inside a bot handler, so there is no active conversation to fall back to. */
 export function guardFor(
   chat: ChatBinding,
   scope: ReadScope | false | undefined,

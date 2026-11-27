@@ -37,7 +37,7 @@ export interface ToolSpec {
   title: string;
 }
 
-/** Inputs chat-mcp adds to one of Chat SDK's tools, and how it answers when they are given. */
+/** Inputs chat-sdk-mcp adds to one of Chat SDK's tools, and how it answers when they are given. */
 export interface Extension {
   input: z.ZodRawShape;
   run(
@@ -47,7 +47,7 @@ export interface Extension {
   ): Promise<unknown> | undefined;
 }
 
-/** A tool chat-mcp defines itself, for what Chat SDK's toolset leaves out. */
+/** A tool chat-sdk-mcp defines itself, for what Chat SDK's toolset leaves out. */
 export interface OwnTool extends ToolSpec {
   description: string;
   input: z.ZodObject;
@@ -345,7 +345,7 @@ export const OWN_TOOLS = [
   },
 ] as const satisfies readonly OwnTool[];
 
-/** The name of every tool chat-mcp registers. */
+/** The name of every tool chat-sdk-mcp registers. */
 export type ChatMcpToolName =
   | (typeof CHAT_TOOLS)[keyof typeof CHAT_TOOLS]["name"]
   | (typeof OWN_TOOLS)[number]["name"]

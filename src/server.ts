@@ -24,7 +24,7 @@ export const CHAT_MCP_INSTRUCTIONS =
  */
 export function createChatMcpServer(options: ChatMcpOptions): McpServer {
   const server = new McpServer(
-    { name: "chat-mcp", title: "Chat SDK", version: __VERSION__ },
+    { name: "chat-sdk-mcp", title: "Chat SDK", version: __VERSION__ },
     { instructions: CHAT_MCP_INSTRUCTIONS },
   );
   registerChatTools(server, options);

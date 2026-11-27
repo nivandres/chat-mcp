@@ -1,6 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/server";
 import type { Chat } from "chat";
-import { CHAT_MCP_INSTRUCTIONS, registerChatTools } from "chat-mcp";
+import { CHAT_MCP_INSTRUCTIONS, registerChatTools } from "chat-sdk-mcp";
 import { z } from "zod";
 
 declare const bot: Chat;

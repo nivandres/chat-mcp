@@ -42,7 +42,7 @@ describe("loadConfig", () => {
     await expect(
       loadConfig(undefined, { CHAT_MCP_ADAPTERS: "slack" }),
     ).rejects.toThrow(
-      'Adapter "slack" needs @chat-adapter/slack (with @slack/socket-mode, @slack/web-api). Install it next to chat-mcp.',
+      'Adapter "slack" needs @chat-adapter/slack (with @slack/socket-mode, @slack/web-api). Install it next to chat-sdk-mcp.',
     );
   });
 
@@ -70,7 +70,7 @@ describe("loadConfig", () => {
   it("explains an invalid config", async () => {
     await expect(
       loadConfig({ adapters: {}, extra: true } as never, {}),
-    ).rejects.toThrow("Invalid chat-mcp config");
+    ).rejects.toThrow("Invalid chat-sdk-mcp config");
   });
 
   it("builds several bots, each from its own config", async () => {

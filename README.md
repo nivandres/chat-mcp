@@ -1,9 +1,9 @@
-# chat-mcp
+# chat-sdk-mcp
 
-> npm package: [`chat-mcp`](https://www.npmjs.com/package/chat-mcp)
+> npm package: [`chat-sdk-mcp`](https://www.npmjs.com/package/chat-sdk-mcp)
 
-[![npm version](https://img.shields.io/npm/v/chat-mcp?style=flat-square&logo=npm&logoColor=white&labelColor=000&color=000)](https://www.npmjs.com/package/chat-mcp)
-[![npm downloads](https://img.shields.io/npm/dm/chat-mcp?style=flat-square&labelColor=000&color=000)](https://www.npmjs.com/package/chat-mcp)
+[![npm version](https://img.shields.io/npm/v/chat-sdk-mcp?style=flat-square&logo=npm&logoColor=white&labelColor=000&color=000)](https://www.npmjs.com/package/chat-sdk-mcp)
+[![npm downloads](https://img.shields.io/npm/dm/chat-sdk-mcp?style=flat-square&labelColor=000&color=000)](https://www.npmjs.com/package/chat-sdk-mcp)
 [![MIT License](https://img.shields.io/badge/License-MIT-000?style=flat-square&logo=opensourceinitiative&logoColor=white&labelColor=000&color=000)](./LICENSE)
 
 MCP server for [Chat SDK](https://chat-sdk.dev). It gives AI agents the chat channels your bot already has, Slack, Telegram, WhatsApp, Teams or any other adapter, through the tools Chat SDK defines in `chat/ai`: read threads and messages, post, reply, edit, delete, react, open DMs and look users up. It runs over stdio or Streamable HTTP, as a CLI, inside your own MCP server, or as a serverless route.
@@ -11,7 +11,7 @@ MCP server for [Chat SDK](https://chat-sdk.dev). It gives AI agents the chat cha
 ## Installation
 
 ```bash
-pnpm add chat-mcp chat @modelcontextprotocol/server
+pnpm add chat-sdk-mcp chat @modelcontextprotocol/server
 ```
 
 Add the adapters your bot uses, such as `@chat-adapter/slack`. ESM only, Node >= 20. `chat` and `@modelcontextprotocol/server` are peers, so you control their versions.
@@ -27,7 +27,7 @@ Point `CHAT_MCP_ADAPTERS` at the catalog adapters you use. Each one reads its ow
   "mcpServers": {
     "chat": {
       "command": "npx",
-      "args": ["chat-mcp"],
+      "args": ["chat-sdk-mcp"],
       "env": {
         "CHAT_MCP_ADAPTERS": "slack,telegram",
         "SLACK_BOT_TOKEN": "xoxb-…",
@@ -39,7 +39,7 @@ Point `CHAT_MCP_ADAPTERS` at the catalog adapters you use. Each one reads its ow
 }
 ```
 
-Run it from the project that has `chat-mcp` and the adapters installed. A missing adapter fails at startup with the package to install.
+Run it from the project that has `chat-sdk-mcp` and the adapters installed. A missing adapter fails at startup with the package to install.
 
 ### Inside your own MCP server
 
@@ -47,7 +47,7 @@ Run it from the project that has `chat-mcp` and the adapters installed. A missin
 
 ```typescript
 import { McpServer } from "@modelcontextprotocol/server";
-import { CHAT_MCP_INSTRUCTIONS, registerChatTools } from "chat-mcp";
+import { CHAT_MCP_INSTRUCTIONS, registerChatTools } from "chat-sdk-mcp";
 import { bot } from "./lib/bot";
 
 const server = new McpServer(
@@ -66,7 +66,7 @@ It returns the SDK handle of each tool, so you can rename, describe, wrap, disab
 `createChatMcpHandler` serves the tools over Streamable HTTP, statelessly, from any `fetch` runtime: Vercel Functions, Next.js route handlers, Hono, Bun or Workers.
 
 ```typescript title="app/api/mcp/route.ts"
-import { createChatMcpHandler } from "chat-mcp";
+import { createChatMcpHandler } from "chat-sdk-mcp";
 import { bot } from "@/lib/bot";
 
 const mcp = createChatMcpHandler({ chat: bot });
@@ -85,7 +85,7 @@ The handler checks no credentials, so authenticate the request first. With Verce
 
 ```typescript
 import { createMcpHandler } from "mcp-handler";
-import { CHAT_MCP_INSTRUCTIONS, registerChatTools } from "chat-mcp";
+import { CHAT_MCP_INSTRUCTIONS, registerChatTools } from "chat-sdk-mcp";
 
 const handler = createMcpHandler(
   (server) => {
@@ -112,7 +112,7 @@ export { handler as GET, handler as POST };
 
 ### Without code
 
-The CLI, and `loadConfig` from `chat-mcp/config`, build the `Chat` from one of these:
+The CLI, and `loadConfig` from `chat-sdk-mcp/config`, build the `Chat` from one of these:
 
 - **`CHAT_MCP_ADAPTERS`**: catalog slugs such as `slack,telegram`, each built with its own variables, and `CHAT_MCP_STATE` for the state adapter (memory by default).
 - **`CHAT_MCP_CONFIG`**: a JSON file, inline JSON, or a module that exports your bot as `default` or `bot`, such as `./lib/bot.ts`.
@@ -137,30 +137,30 @@ The JSON form is `new Chat({ adapters, state, userName, logger })` with each ada
 For several bots, put one such object per id under `bots`: `{ "bots": { "sales": { … }, "support": { … } } }`.
 
 ```typescript
-import { createChatMcpServer } from "chat-mcp";
-import { loadConfig } from "chat-mcp/config";
+import { createChatMcpServer } from "chat-sdk-mcp";
+import { loadConfig } from "chat-sdk-mcp/config";
 
-const server = createChatMcpServer(await loadConfig("./chat-mcp.json"));
+const server = createChatMcpServer(await loadConfig("./chat-sdk-mcp.json"));
 ```
 
 ## Environment variables
 
-| Variable              | Default     | Description                                                                  |
-| --------------------- | ----------- | ---------------------------------------------------------------------------- |
-| `CHAT_MCP_ADAPTERS`   | –           | Catalog slugs of the adapters to build, comma-separated                      |
-| `CHAT_MCP_STATE`      | `memory`    | Catalog slug of the state adapter, with `CHAT_MCP_ADAPTERS`                  |
-| `CHAT_MCP_CONFIG`     | –           | JSON file, inline JSON, or a module exporting your bot                       |
-| `BOT_USERNAME`        | `chat-mcp`  | The bot's `userName` when the config sets none                               |
-| `CHAT_MCP_PRESET`     | every tool  | `reader`, `messenger` or `moderator`, comma-separated                        |
-| `CHAT_MCP_HOST`       | `127.0.0.1` | `chat-mcp http`: the address to listen on                                    |
-| `CHAT_MCP_PORT`       | `3000`      | `chat-mcp http`: the port; the endpoint is `/mcp`                            |
-| `CHAT_MCP_AUTH_TOKEN` | –           | `chat-mcp http`: the bearer token, required off this machine, 16+ characters |
+| Variable              | Default        | Description                                                                      |
+| --------------------- | -------------- | -------------------------------------------------------------------------------- |
+| `CHAT_MCP_ADAPTERS`   | –              | Catalog slugs of the adapters to build, comma-separated                          |
+| `CHAT_MCP_STATE`      | `memory`       | Catalog slug of the state adapter, with `CHAT_MCP_ADAPTERS`                      |
+| `CHAT_MCP_CONFIG`     | –              | JSON file, inline JSON, or a module exporting your bot                           |
+| `BOT_USERNAME`        | `chat-sdk-mcp` | The bot's `userName` when the config sets none                                   |
+| `CHAT_MCP_PRESET`     | every tool     | `reader`, `messenger` or `moderator`, comma-separated                            |
+| `CHAT_MCP_HOST`       | `127.0.0.1`    | `chat-sdk-mcp http`: the address to listen on                                    |
+| `CHAT_MCP_PORT`       | `3000`         | `chat-sdk-mcp http`: the port; the endpoint is `/mcp`                            |
+| `CHAT_MCP_AUTH_TOKEN` | –              | `chat-sdk-mcp http`: the bearer token, required off this machine, 16+ characters |
 
-`chat-mcp` serves stdio, and `chat-mcp http` serves Streamable HTTP.
+`chat-sdk-mcp` serves stdio, and `chat-sdk-mcp http` serves Streamable HTTP.
 
 ## Tools
 
-Most tools are Chat SDK's own, from `chat/ai`, with the same inputs and behavior. chat-mcp adds what its toolset leaves out. Thread ids (`slack:C123:1700000000.000100`) and channel ids (`slack:C123`) are full Chat SDK ids.
+Most tools are Chat SDK's own, from `chat/ai`, with the same inputs and behavior. chat-sdk-mcp adds what its toolset leaves out. Thread ids (`slack:C123:1700000000.000100`) and channel ids (`slack:C123`) are full Chat SDK ids.
 
 | Tool                      | What it does                                                          | Annotations |
 | ------------------------- | --------------------------------------------------------------------- | ----------- |
@@ -191,12 +191,12 @@ Most tools are Chat SDK's own, from `chat/ai`, with the same inputs and behavior
 
 ## Results and errors
 
-A result is the tool's output as `structuredContent` and the same JSON as text. A result that can be null comes under its key, such as `{ "user": null }`. An error, from Chat SDK, the platform or chat-mcp, is a tool error carrying its message, such as `Rate limited by slack, retry after 30s`. Nothing wraps either, so a host that wants its own envelope can wrap the tools with their handles.
+A result is the tool's output as `structuredContent` and the same JSON as text. A result that can be null comes under its key, such as `{ "user": null }`. An error, from Chat SDK, the platform or chat-sdk-mcp, is a tool error carrying its message, such as `Rate limited by slack, retry after 30s`. Nothing wraps either, so a host that wants its own envelope can wrap the tools with their handles.
 
 ## Limits
 
 - **Adapters are fixed when the `Chat` is built.** Change the configuration and restart to add one.
-- **chat-mcp next to a live bot**: reading cached history, as WhatsApp and Telegram keep it, needs the bot's own state adapter. Telegram in polling mode allows a single consumer, so set `"mode": "webhook"` for chat-mcp when the bot already polls.
+- **chat-sdk-mcp next to a live bot**: reading cached history, as WhatsApp and Telegram keep it, needs the bot's own state adapter. Telegram in polling mode allows a single consumer, so set `"mode": "webhook"` for chat-sdk-mcp when the bot already polls.
 - **No credentials go through tools.** They stay in the environment or the config.
 
 ## License

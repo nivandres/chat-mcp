@@ -12,7 +12,7 @@ import { createChatMcpHandler, createChatMcpServer } from "./server";
 
 const command = process.argv[2] ?? "stdio";
 if (command !== "stdio" && command !== "http") {
-  console.error("Usage: chat-mcp [stdio|http]");
+  console.error("Usage: chat-sdk-mcp [stdio|http]");
   process.exit(1);
 }
 if (command === "stdio") {
@@ -35,14 +35,20 @@ const ENV = z.object({
 const parsed = ENV.safeParse(process.env);
 if (!parsed.success) {
   console.error(
-    `Invalid chat-mcp environment:\n${z.prettifyError(parsed.error)}`,
+    `Invalid chat-sdk-mcp environment:\n${z.prettifyError(parsed.error)}`,
   );
   process.exit(1);
 }
 const { CHAT_MCP_PRESET, CHAT_MCP_HOST, CHAT_MCP_PORT, CHAT_MCP_AUTH_TOKEN } =
   parsed.data;
 
-const options = { ...(await loadConfig()), preset: CHAT_MCP_PRESET };
+const options = {
+  ...(await loadConfig().catch((error: unknown) => {
+    console.error(error instanceof Error ? error.message : error);
+    process.exit(1);
+  })),
+  preset: CHAT_MCP_PRESET,
+};
 
 if (command === "stdio") {
   serveStdio(() => createChatMcpServer(options));
@@ -81,7 +87,7 @@ if (command === "stdio") {
     void handle(req, res);
   }).listen(CHAT_MCP_PORT, CHAT_MCP_HOST, () => {
     console.error(
-      `chat-mcp listening on http://${CHAT_MCP_HOST}:${CHAT_MCP_PORT}/mcp`,
+      `chat-sdk-mcp listening on http://${CHAT_MCP_HOST}:${CHAT_MCP_PORT}/mcp`,
     );
   });
 }

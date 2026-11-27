@@ -1,6 +1,6 @@
 // app/api/mcp/route.ts in a Next.js app on Vercel.
 import type { Chat } from "chat";
-import { createChatMcpHandler } from "chat-mcp";
+import { createChatMcpHandler } from "chat-sdk-mcp";
 
 declare const bot: Chat;
 

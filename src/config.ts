@@ -94,7 +94,7 @@ async function build<T>(
         ? ` (with ${setup.peerDeps.join(", ")})`
         : "";
       throw new Error(
-        `Adapter "${key}" needs ${specifier}${peers}. Install it next to chat-mcp.`,
+        `Adapter "${key}" needs ${specifier}${peers}. Install it next to chat-sdk-mcp.`,
       );
     },
   );
@@ -128,7 +128,7 @@ async function chatFrom(
     slugs[key] = entry.slug ?? key;
   }
   const chat = new Chat({
-    userName: config.userName ?? env.BOT_USERNAME ?? "chat-mcp",
+    userName: config.userName ?? env.BOT_USERNAME ?? "chat-sdk-mcp",
     logger: config.logger,
     adapters,
     state: await build<StateAdapter>(
@@ -194,7 +194,7 @@ function fromEnv(env: Env): ChatMcpConfig {
  *
  * @example
  * ```ts
- * const server = createChatMcpServer(await loadConfig("./chat-mcp.json"));
+ * const server = createChatMcpServer(await loadConfig("./chat-sdk-mcp.json"));
  * ```
  */
 export async function loadConfig(
@@ -213,7 +213,7 @@ export async function loadConfig(
   const parsed = CONFIG.safeParse(input.config);
   if (!parsed.success) {
     throw new Error(
-      `Invalid chat-mcp config:\n${z.prettifyError(parsed.error)}`,
+      `Invalid chat-sdk-mcp config:\n${z.prettifyError(parsed.error)}`,
     );
   }
   const config = parsed.data;

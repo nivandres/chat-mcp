@@ -9,5 +9,5 @@ Initial release: an MCP server for Chat SDK, over stdio and Streamable HTTP.
 - `list_adapters` lists each adapter with the tools that work on it, from what it implements and, for adapters built from the catalog, what the catalog says it supports.
 - `registerChatTools` adds the tools to any MCP server, `mcp-handler`'s included, and returns their handles. `createChatMcpServer` builds a server, and `createChatMcpHandler` serves one from any `fetch` runtime.
 - Several bots by id, or loaded per call from a `BotSource`, with a `bot` on every tool, described as `botDescription` says, and `list_bots`.
-- `chat-mcp/config` builds the `Chat` from catalog slugs in `CHAT_MCP_ADAPTERS`, a JSON file or inline JSON with `${VAR}` references, or a module exporting your bot. An adapter that is missing, unknown or misnamed fails at startup with what to do.
-- The `chat-mcp` CLI serves stdio, or Streamable HTTP with `chat-mcp http`, behind a bearer token off this machine.
+- `chat-sdk-mcp/config` builds the `Chat` from catalog slugs in `CHAT_MCP_ADAPTERS`, a JSON file or inline JSON with `${VAR}` references, or a module exporting your bot. An adapter that is missing, unknown or misnamed fails at startup with what to do.
+- The `chat-sdk-mcp` CLI serves stdio, or Streamable HTTP with `chat-sdk-mcp http`, behind a bearer token off this machine.

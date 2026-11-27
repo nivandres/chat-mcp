@@ -1,5 +1,5 @@
 {
-  "name": "chat-mcp",
+  "name": "chat-sdk-mcp",
   "version": "0.1.0",
   "description": "MCP server for Chat SDK: let agents read and act on every chat adapter over stdio or Streamable HTTP",
   "author": "nivandres",
@@ -10,7 +10,7 @@
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "chat-mcp": "dist/cli.js"
+    "chat-sdk-mcp": "dist/cli.js"
   },
   "repository": {
     "type": "git",
@@ -84,5 +84,5 @@
     "mcp-server",
     "chatbot"
   ],
-  "mcpName": "io.github.nivandres/chat-mcp"
+  "mcpName": "io.github.nivandres/chat-sdk-mcp"
 }
