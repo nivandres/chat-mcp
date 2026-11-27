@@ -39,8 +39,13 @@ export type ChatMcpOptions = Omit<
   "chat" | "overrides" | "requireApproval"
 > &
   (
-    | { chat: ChatBinding; bots?: never }
-    | { bots: Record<string, ChatBinding> | BotSource; chat?: never }
+    | { chat: ChatBinding; bots?: never; botDescription?: never }
+    | {
+        bots: Record<string, ChatBinding> | BotSource;
+        chat?: never;
+        /** How the `bot` input is described to agents, such as "Channel id, from list_channels". */
+        botDescription?: string;
+      }
   );
 
 /** The SDK handle of each registered tool, to rename, retitle, wrap, disable or remove it. */
@@ -50,8 +55,6 @@ export type RegisteredChatTools = Partial<
 
 /** The catalog slug of each adapter chat-mcp built itself, so its catalog features can hide what it lacks. */
 export const catalogSlugs = new WeakMap<ChatBinding, Record<string, string>>();
-
-const BOT_INPUT = z.string().describe("Bot id, as list_bots names it");
 
 function sourceOf(bots: Record<string, ChatBinding> | BotSource): BotSource {
   if (typeof bots.list === "function" && typeof bots.load === "function") {
@@ -100,10 +103,13 @@ function supports(
  */
 export function registerChatTools(
   server: Pick<McpServer, "registerTool">,
-  { chat, bots, ...options }: ChatMcpOptions,
+  { chat, bots, botDescription, ...options }: ChatMcpOptions,
 ): RegisteredChatTools {
   const source = chat ? undefined : sourceOf(bots);
   const presets = options.preset && [options.preset].flat();
+  const botInput = z
+    .string()
+    .describe(botDescription ?? "Bot id, as list_bots names it");
   const toolsets = new WeakMap<ChatBinding, Map<string, TanStackTool>>();
   const guards = new WeakMap<ChatBinding, Guard>();
   const tools: RegisteredChatTools = {};
@@ -153,7 +159,7 @@ export function registerChatTools(
       {
         title: spec.title,
         description,
-        inputSchema: source ? input.extend({ bot: BOT_INPUT }) : input,
+        inputSchema: source ? input.extend({ bot: botInput }) : input,
         annotations: spec.annotations,
       },
       async ({ bot, ...args }: Record<string, unknown>) => {

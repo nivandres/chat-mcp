@@ -101,13 +101,14 @@ export { handler as GET, handler as POST };
 
 `createChatMcpServer`, `registerChatTools` and `createChatMcpHandler` take the same options:
 
-| Option        | Default    | Description                                                                                                                     |
-| ------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `chat`        | –          | The `Chat` instance whose adapters the tools reach                                                                              |
-| `bots`        | –          | Several `Chat` instances by id, or a `BotSource`, in place of `chat`. Every tool then takes a `bot`, and `list_bots` names them |
-| `preset`      | every tool | Chat SDK's `reader`, `messenger` or `moderator`, or several                                                                     |
-| `scope`       | –          | Confine the tools to one thread or channel id, as in Chat SDK                                                                   |
-| `strictScope` | `false`    | Confine a thread scope to that thread alone                                                                                     |
+| Option           | Default    | Description                                                                                                                     |
+| ---------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `chat`           | –          | The `Chat` instance whose adapters the tools reach                                                                              |
+| `bots`           | –          | Several `Chat` instances by id, or a `BotSource`, in place of `chat`. Every tool then takes a `bot`, and `list_bots` names them |
+| `botDescription` | –          | How the `bot` input is described to agents, when your bots are, say, channels                                                   |
+| `preset`         | every tool | Chat SDK's `reader`, `messenger` or `moderator`, or several                                                                     |
+| `scope`          | –          | Confine the tools to one thread or channel id, as in Chat SDK                                                                   |
+| `strictScope`    | `false`    | Confine a thread scope to that thread alone                                                                                     |
 
 ### Without code
 

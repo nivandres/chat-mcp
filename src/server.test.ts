@@ -360,6 +360,20 @@ describe("several bots", () => {
     ).toContain('Unknown bot "nope"');
   });
 
+  it("describes the bot input as the host names its bots", async () => {
+    const client = await connectTo({
+      bots: { acme: chatWith(createMockAdapter("slack")) },
+      botDescription: "Channel id, from list_channels",
+    });
+
+    const { tools } = await client.listTools();
+    const post = tools.find((tool) => tool.name === "post_message");
+
+    expect(post?.inputSchema.properties?.bot).toMatchObject({
+      description: "Channel id, from list_channels",
+    });
+  });
+
   it("loads a bot from a source only when a call needs it", async () => {
     const bot = chatWith(createMockAdapter("slack"));
     const source: BotSource = {
