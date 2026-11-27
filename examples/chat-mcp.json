@@ -1,0 +1,12 @@
+{
+  "adapters": {
+    "slack": {},
+    "telegram": { "config": { "mode": "webhook" } },
+    "whatsapp": {
+      "packageName": "chat-adapter-wwebjs",
+      "factoryExport": "createWWebJSAdapter",
+      "config": { "adapterName": "whatsapp" }
+    }
+  },
+  "state": { "slug": "redis", "config": { "url": "${REDIS_URL}" } }
+}

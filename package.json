@@ -1,0 +1,88 @@
+{
+  "name": "chat-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for Chat SDK: let agents read and act on every chat adapter over stdio or Streamable HTTP",
+  "author": "nivandres",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "chat-mcp": "dist/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nivandres/chat-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nivandres/chat-mcp/issues"
+  },
+  "homepage": "https://github.com/nivandres/chat-mcp#readme",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./config": {
+      "types": "./dist/config.d.ts",
+      "import": "./dist/config.js"
+    }
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run --coverage",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "typecheck:examples": "tsc --noEmit --project examples/tsconfig.json",
+    "lint": "oxlint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "bun run typecheck && bun run typecheck:examples && bun run lint && bun run format:check && bun run test",
+    "prepublishOnly": "bun run clean && bun run check && bun run build",
+    "clean": "rm -rf dist"
+  },
+  "peerDependencies": {
+    "@modelcontextprotocol/server": "^2.4.0",
+    "chat": "^4.44.0"
+  },
+  "dependencies": {
+    "@chat-adapter/catalog": "^4.45.0",
+    "@chat-adapter/state-memory": "^4.45.0",
+    "@modelcontextprotocol/node": "^2.1.2",
+    "zod": "^4.2.0"
+  },
+  "devDependencies": {
+    "@chat-adapter/tests": "^4.45.0",
+    "@modelcontextprotocol/client": "^2.4.0",
+    "@modelcontextprotocol/server": "^2.4.0",
+    "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^5.1.2",
+    "chat": "^4.45.0",
+    "oxlint": "^1.95.0",
+    "prettier": "^3.10.1",
+    "tsup": "^9.0.0",
+    "typescript": "^5.9.3",
+    "vitest": "^5.1.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "chat-sdk",
+    "mcp",
+    "model-context-protocol",
+    "mcp-server",
+    "chatbot"
+  ],
+  "mcpName": "io.github.nivandres/chat-mcp"
+}
